@@ -45,12 +45,20 @@ function getScores() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
   const data = sheet.getDataRange().getValues();
 
-  // Skip header row
-  const scores = data.slice(1)
+  // Skip header row, keep only best score per player, top 10
+  const all = data.slice(1)
     .map(row => ({ name: row[0], score: Number(row[1]), date: row[2] }))
-    .filter(s => s.name && !isNaN(s.score))
+    .filter(s => s.name && !isNaN(s.score));
+
+  const byName = {};
+  for (const s of all) {
+    if (!byName[s.name] || s.score > byName[s.name].score) {
+      byName[s.name] = s;
+    }
+  }
+  const scores = Object.values(byName)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 50);
+    .slice(0, 10);
 
   return ContentService.createTextOutput(JSON.stringify(scores))
     .setMimeType(ContentService.MimeType.JSON);

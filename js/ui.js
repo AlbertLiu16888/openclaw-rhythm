@@ -232,9 +232,18 @@
     }
     function saveLocalScore(name, score) {
         const scores = getLocalScores();
-        scores.push({ name, score, date: new Date().toISOString().slice(0, 10) });
+        // 同名玩家只保留最高分
+        const existing = scores.find(s => s.name === name);
+        if (existing) {
+            if (score > existing.score) {
+                existing.score = score;
+                existing.date = new Date().toISOString().slice(0, 10);
+            }
+        } else {
+            scores.push({ name, score, date: new Date().toISOString().slice(0, 10) });
+        }
         scores.sort((a, b) => b.score - a.score);
-        localStorage.setItem('oc_scores', JSON.stringify(scores.slice(0, 50)));
+        localStorage.setItem('oc_scores', JSON.stringify(scores.slice(0, 10)));
     }
 
     async function submitScore(name, score) {
@@ -272,16 +281,18 @@
             }
         }
 
-        // Merge with local scores
+        // Merge with local scores, each player keeps best score only
         const localScores = getLocalScores();
-        const merged = [...scores];
-        for (const ls of localScores) {
-            if (!merged.some(s => s.name === ls.name && s.score === ls.score)) {
-                merged.push(ls);
+        const byName = new Map();
+        for (const s of [...scores, ...localScores]) {
+            const prev = byName.get(s.name);
+            if (!prev || s.score > prev.score) {
+                byName.set(s.name, s);
             }
         }
+        const merged = [...byName.values()];
         merged.sort((a, b) => b.score - a.score);
-        const top = merged.slice(0, 30);
+        const top = merged.slice(0, 10);
 
         if (top.length === 0) {
             list.innerHTML = '<p class="loading">尚無紀錄</p>';
