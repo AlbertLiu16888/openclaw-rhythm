@@ -157,6 +157,8 @@
     const keyMap = { d: 'L', arrowleft: 'L', k: 'R', arrowright: 'R', f: 'L', j: 'R' };
     const keyState = {};
     document.addEventListener('keydown', e => {
+        // 在輸入框中不攔截鍵盤（允許正常打字）
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         const lane = keyMap[e.key.toLowerCase()];
         if (lane && !keyState[e.key]) {
             keyState[e.key] = true;
@@ -165,6 +167,7 @@
         }
     });
     document.addEventListener('keyup', e => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         const lane = keyMap[e.key.toLowerCase()];
         if (lane) {
             keyState[e.key] = false;
