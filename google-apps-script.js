@@ -12,15 +12,11 @@
  * 8. 複製部署的 URL，貼到遊戲的管理後台 (#admin)
  */
 
-const SHEET_NAME = 'Sheet1'; // 試算表分頁名稱
-
 function doGet(e) {
   const action = e.parameter.action;
-
   if (action === 'getScores') {
     return getScores();
   }
-
   return ContentService.createTextOutput(JSON.stringify({ error: 'Unknown action' }))
     .setMimeType(ContentService.MimeType.JSON);
 }
@@ -28,11 +24,9 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-
     if (data.action === 'addScore') {
       return addScore(data.name, data.score);
     }
-
     return ContentService.createTextOutput(JSON.stringify({ error: 'Unknown action' }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
@@ -41,15 +35,16 @@ function doPost(e) {
   }
 }
 
-function getScores() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
+function getSheet() {
+  return SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+}
 
-  // Skip header row, keep only best score per player, top 10
+function getScores() {
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
   const all = data.slice(1)
     .map(row => ({ name: row[0], score: Number(row[1]), date: row[2] }))
     .filter(s => s.name && !isNaN(s.score));
-
   const byName = {};
   for (const s of all) {
     if (!byName[s.name] || s.score > byName[s.name].score) {
@@ -59,7 +54,6 @@ function getScores() {
   const scores = Object.values(byName)
     .sort((a, b) => b.score - a.score)
     .slice(0, 10);
-
   return ContentService.createTextOutput(JSON.stringify(scores))
     .setMimeType(ContentService.MimeType.JSON);
 }
@@ -69,15 +63,10 @@ function addScore(name, score) {
     return ContentService.createTextOutput(JSON.stringify({ error: 'Invalid data' }))
       .setMimeType(ContentService.MimeType.JSON);
   }
-
-  // Sanitize name (max 12 chars, no scripts)
   name = String(name).replace(/<[^>]*>/g, '').substring(0, 12);
-
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  const sheet = getSheet();
   const date = new Date().toISOString().slice(0, 10);
-
   sheet.appendRow([name, score, date]);
-
   return ContentService.createTextOutput(JSON.stringify({ success: true }))
     .setMimeType(ContentService.MimeType.JSON);
 }

@@ -8,7 +8,7 @@ const CONFIG = {
         return parseInt(localStorage.getItem('oc_threshold')) || 3000;
     },
     get apiUrl() {
-        return localStorage.getItem('oc_api_url') || '';
+        return localStorage.getItem('oc_api_url') || 'https://script.google.com/macros/s/AKfycbwHvZvRb3ivgQJWKL6jHlwVfohgKvo9g9j_yLn-kwe7yFeacwyNw3PcVpvyzQMfkl2s/exec';
     },
 
     // 分數設定
