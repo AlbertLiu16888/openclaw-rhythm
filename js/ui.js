@@ -81,6 +81,9 @@
             game.onComboChange = combo => {
                 const el = $('hud-combo');
                 if (combo > 1) {
+                    // Re-trigger fade animation by resetting class
+                    el.className = '';
+                    void el.offsetWidth; // force reflow to restart animation
                     el.className = 'visible';
                     $('combo-count').textContent = combo;
                     // Combo burst at milestones

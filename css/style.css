@@ -111,11 +111,20 @@ html, body {
     font-weight: bold;
     font-size: 1.1rem;
     color: #ffcc00;
-    transition: opacity 0.3s;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
 }
 #hud-combo.hidden { opacity: 0; }
-#hud-combo.visible { opacity: 1; }
+#hud-combo.visible {
+    opacity: 1;
+    animation: comboFadeOut 1.8s ease forwards;
+}
 #combo-count { font-size: 1.4rem; }
+@keyframes comboFadeOut {
+    0%   { opacity: 1; }
+    60%  { opacity: 0.8; }
+    100% { opacity: 0.15; }
+}
 .hud-right {
     font-size: 1.3rem;
     font-weight: bold;
@@ -322,17 +331,18 @@ html, body {
 /* === Lane Divider & Hit Zone (drawn on canvas but also CSS helpers) === */
 .combo-burst {
     position: fixed;
-    top: 50%; left: 50%;
+    top: 35%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: #ffcc00;
-    text-shadow: 0 0 30px rgba(255,204,0,0.7);
-    animation: comboBurst 0.8s ease-out forwards;
+    text-shadow: 0 0 20px rgba(255,204,0,0.5);
+    animation: comboBurst 0.6s ease-out forwards;
     z-index: 25;
     pointer-events: none;
 }
 @keyframes comboBurst {
-    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
+    40% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
+    100% { transform: translate(-50%, -80%) scale(1.5); opacity: 0; }
 }
