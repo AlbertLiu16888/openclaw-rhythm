@@ -12,8 +12,10 @@
 
     const canvas = $('game-canvas');
     const game = new RhythmGame(canvas);
-
     let playerName = '';
+
+    // 開機載入遠端設定
+    CONFIG.loadRemoteConfig();
 
     // --- Screen Navigation ---
     function showScreen(name) {
@@ -22,9 +24,10 @@
     }
 
     // --- Check for admin hash ---
-    function checkAdminMode() {
+    async function checkAdminMode() {
         if (window.location.hash === '#admin') {
             showScreen('admin');
+            await CONFIG.loadRemoteConfig();
             $('admin-secret').value = CONFIG.secretMessage;
             $('admin-threshold').value = CONFIG.passThreshold;
             $('admin-api-url').value = CONFIG.apiUrl;
@@ -60,7 +63,8 @@
     });
 
     // --- Game ---
-    function startGame() {
+    async function startGame() {
+        if (!CONFIG._loaded) await CONFIG.loadRemoteConfig();
         showScreen('game');
         $('hud-player').textContent = playerName;
         $('hud-score').textContent = '0';
@@ -257,7 +261,7 @@
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'addScore', name, score }),
+                body: JSON.stringify({ action: 'addScore', game: 'rhythm', name, score }),
             });
         } catch (e) {
             console.warn('Failed to submit score to remote:', e);
@@ -273,7 +277,7 @@
 
         if (url) {
             try {
-                const res = await fetch(`${url}?action=getScores`);
+                const res = await fetch(`${url}?action=getScores&game=rhythm`);
                 const data = await res.json();
                 if (Array.isArray(data)) scores = data;
             } catch (e) {
@@ -317,12 +321,24 @@
     $('btn-back').addEventListener('click', () => showScreen('start'));
 
     // --- Admin ---
-    $('btn-admin-save').addEventListener('click', () => {
-        localStorage.setItem('oc_secret', $('admin-secret').value);
-        localStorage.setItem('oc_threshold', $('admin-threshold').value);
+    $('btn-admin-save').addEventListener('click', async () => {
+        const secret = $('admin-secret').value;
+        const threshold = $('admin-threshold').value;
+
+        localStorage.setItem('oc_secret', secret);
+        localStorage.setItem('oc_threshold', threshold);
         localStorage.setItem('oc_api_url', $('admin-api-url').value);
-        $('admin-status').textContent = '設定已儲存！';
-        setTimeout(() => $('admin-status').textContent = '', 2000);
+
+        // 同步到 Google Sheets
+        $('admin-status').textContent = '儲存中...';
+        try {
+            await CONFIG.saveRemoteConfig('secretMessage', secret);
+            await CONFIG.saveRemoteConfig('passThreshold', threshold);
+            $('admin-status').textContent = '✅ 設定已儲存（本機 + 雲端）！';
+        } catch (e) {
+            $('admin-status').textContent = '⚠️ 本機已存，雲端同步失敗';
+        }
+        setTimeout(() => $('admin-status').textContent = '', 3000);
     });
 
     $('btn-admin-back').addEventListener('click', () => {
