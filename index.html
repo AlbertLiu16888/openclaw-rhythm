@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>OpenClaw Rhythm</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 開始畫面 -->
+    <div id="screen-start" class="screen active">
+        <div class="start-container">
+            <h1 class="game-title">🎵 OpenClaw Rhythm</h1>
+            <p class="subtitle">節奏挑戰</p>
+            <div class="input-group">
+                <label for="player-name">輸入你的名稱</label>
+                <input type="text" id="player-name" maxlength="12" placeholder="玩家名稱" autocomplete="off">
+            </div>
+            <button id="btn-start" class="btn-primary" disabled>開始遊戲</button>
+            <button id="btn-leaderboard" class="btn-secondary">排行榜</button>
+        </div>
+    </div>
+
+    <!-- 遊戲畫面 -->
+    <div id="screen-game" class="screen">
+        <div id="game-hud">
+            <div class="hud-left">
+                <span id="hud-player"></span>
+            </div>
+            <div class="hud-center">
+                <span id="hud-combo" class="hidden">COMBO <span id="combo-count">0</span></span>
+            </div>
+            <div class="hud-right">
+                <span id="hud-score">0</span>
+            </div>
+        </div>
+        <canvas id="game-canvas"></canvas>
+        <div id="hit-effects"></div>
+        <div id="game-controls">
+            <button id="btn-left" class="game-btn">◀</button>
+            <button id="btn-right" class="game-btn">▶</button>
+        </div>
+    </div>
+
+    <!-- 結算畫面 -->
+    <div id="screen-result" class="screen">
+        <div class="result-container">
+            <div id="result-content">
+                <h2 id="result-title"></h2>
+                <div id="result-stats">
+                    <div class="stat"><span class="stat-label">分數</span><span id="result-score" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">最高連擊</span><span id="result-max-combo" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">Perfect</span><span id="result-perfect" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">Good</span><span id="result-good" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">Miss</span><span id="result-miss" class="stat-value">0</span></div>
+                </div>
+                <div id="secret-message-area" class="hidden"></div>
+            </div>
+            <button id="btn-retry" class="btn-primary">再玩一次</button>
+            <button id="btn-home" class="btn-secondary">回首頁</button>
+        </div>
+    </div>
+
+    <!-- 排行榜畫面 -->
+    <div id="screen-leaderboard" class="screen">
+        <div class="leaderboard-container">
+            <h2>🏆 排行榜</h2>
+            <div id="leaderboard-list"><p class="loading">載入中...</p></div>
+            <button id="btn-back" class="btn-secondary">返回</button>
+        </div>
+    </div>
+
+    <!-- 管理後台 (URL#admin) -->
+    <div id="screen-admin" class="screen">
+        <div class="admin-container">
+            <h2>管理後台</h2>
+            <div class="admin-group">
+                <label>破關訊息（玩家需記下的文字）</label>
+                <input type="text" id="admin-secret" placeholder="openthedoor">
+            </div>
+            <div class="admin-group">
+                <label>過關分數門檻</label>
+                <input type="number" id="admin-threshold" placeholder="3000">
+            </div>
+            <div class="admin-group">
+                <label>Google Apps Script Web App URL（排行榜）</label>
+                <input type="text" id="admin-api-url" placeholder="https://script.google.com/macros/s/.../exec">
+            </div>
+            <div class="admin-actions">
+                <button id="btn-admin-save" class="btn-primary">儲存設定</button>
+                <button id="btn-admin-back" class="btn-secondary">返回</button>
+            </div>
+            <p id="admin-status"></p>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+</html>
