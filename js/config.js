@@ -18,7 +18,7 @@ const CONFIG = {
         return parseInt(localStorage.getItem('oc_threshold')) || 3000;
     },
     get apiUrl() {
-        return localStorage.getItem('oc_api_url') || 'https://script.google.com/macros/s/AKfycbwHvZvRb3ivgQJWKL6jHlwVfohgKvo9g9j_yLn-kwe7yFeacwyNw3PcVpvyzQMfkl2s/exec';
+        return localStorage.getItem('oc_api_url') || 'https://script.google.com/macros/s/AKfycbwAhuS5A02qLzdvUIzgCabG0FhTJdxlLpQBmAcJzIOgO3GvzMBEzilIzeblsPCnzi-m/exec';
     },
 
     // 從 Google Sheets 載入遠端設定
