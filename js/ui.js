@@ -47,6 +47,7 @@
     btnStart.addEventListener('click', () => {
         playerName = nameInput.value.trim();
         if (!playerName) return;
+        AudioEngine.unlock();
         startGame();
     });
 
@@ -66,6 +67,7 @@
     async function startGame() {
         if (!CONFIG._loaded) await CONFIG.loadRemoteConfig();
         showScreen('game');
+        $('game-toggles').classList.remove('hidden');
         $('hud-player').textContent = playerName;
         $('hud-score').textContent = '0';
         $('hud-combo').className = 'hidden';
@@ -183,6 +185,7 @@
 
     // --- Results Screen ---
     function showResults(results) {
+        $('game-toggles').classList.add('hidden');
         showScreen('result');
         $('result-score').textContent = results.score.toLocaleString();
         $('result-max-combo').textContent = results.maxCombo;
@@ -231,6 +234,7 @@
 
     $('btn-home').addEventListener('click', () => {
         game.stop();
+        $('game-toggles').classList.add('hidden');
         showScreen('start');
     });
 
@@ -324,7 +328,10 @@
         return div.innerHTML;
     }
 
-    $('btn-back').addEventListener('click', () => showScreen('start'));
+    $('btn-back').addEventListener('click', () => {
+        $('game-toggles').classList.add('hidden');
+        showScreen('start');
+    });
 
     // --- Admin ---
     $('btn-admin-save').addEventListener('click', async () => {
@@ -350,5 +357,18 @@
     $('btn-admin-back').addEventListener('click', () => {
         window.location.hash = '';
         showScreen('start');
+    });
+
+    // --- Sound & Vibration Toggles ---
+    $('btn-sound').addEventListener('click', () => {
+        const on = AudioEngine.toggle();
+        $('btn-sound').textContent = on ? '🔊' : '🔇';
+        $('btn-sound').classList.toggle('off', !on);
+    });
+
+    $('btn-vibrate').addEventListener('click', () => {
+        const on = AudioEngine.toggleVibration();
+        $('btn-vibrate').textContent = on ? '📳' : '📴';
+        $('btn-vibrate').classList.toggle('off', !on);
     });
 })();
