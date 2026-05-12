@@ -346,3 +346,195 @@ html, body {
     40% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
     100% { transform: translate(-50%, -80%) scale(1.5); opacity: 0; }
 }
+
+/* === Battle Mode Button === */
+.btn-battle {
+    background: linear-gradient(135deg, #ff6ec7, #ff4444) !important;
+}
+.btn-battle:disabled { opacity: 0.4; }
+.btn-quick {
+    background: linear-gradient(135deg, #00d4ff, #7b68ee) !important;
+}
+
+/* === Lobby Screen === */
+.lobby-container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 360px;
+}
+.lobby-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+.lobby-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+.join-group {
+    display: flex;
+    gap: 0.5rem;
+}
+.join-group input {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #111;
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 4px;
+    outline: none;
+}
+.join-group input:focus { border-color: #7b68ee; }
+.btn-join {
+    width: auto !important;
+    padding: 0.7rem 1.2rem !important;
+    font-size: 0.95rem !important;
+}
+
+/* === Waiting Room === */
+.waiting-container {
+    text-align: center;
+    padding: 2rem;
+    max-width: 400px;
+}
+.waiting-container h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+.room-code-display {
+    font-size: 1rem;
+    color: #aaa;
+    margin-bottom: 1.5rem;
+}
+.room-code-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffcc00;
+    letter-spacing: 6px;
+    font-family: monospace;
+}
+.players-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.player-slot {
+    flex: 1;
+    padding: 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    transition: border-color 0.3s;
+}
+.player-slot.ready {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.08);
+}
+.slot-avatar {
+    font-size: 2.5rem;
+    margin-bottom: 0.3rem;
+}
+.slot-name {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 0.3rem;
+}
+.slot-status {
+    font-size: 0.8rem;
+    color: #4caf50;
+    min-height: 1.2em;
+}
+.vs-divider {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff6ec7;
+    text-shadow: 0 0 15px rgba(255,110,199,0.4);
+}
+.waiting-msg {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    animation: waitPulse 2s ease-in-out infinite;
+}
+@keyframes waitPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* === Opponent Bar (in-game) === */
+.opponent-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.3rem 1rem;
+    background: linear-gradient(90deg, rgba(255,110,199,0.15), rgba(255,68,68,0.15));
+    border-bottom: 1px solid rgba(255,110,199,0.2);
+    z-index: 22;
+    font-size: 0.8rem;
+}
+.opp-name {
+    color: #ff6ec7;
+    font-weight: bold;
+}
+.opp-score {
+    color: #ffcc00;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+.opp-combo {
+    color: #ff6ec7;
+    font-size: 0.8rem;
+}
+
+/* === Battle Result Compare === */
+#battle-result-compare {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-label {
+    flex: 1;
+    font-weight: bold;
+    color: #ccc;
+}
+.compare-label:last-child { text-align: right; }
+.compare-vs {
+    color: #ff6ec7;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0 0.5rem;
+}
+.compare-label-mid {
+    color: #888;
+    font-size: 0.85rem;
+    padding: 0 0.5rem;
+    min-width: 70px;
+    text-align: center;
+}
+.compare-value {
+    flex: 1;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+.compare-value:last-child { text-align: right; }
+.compare-value.winner { color: #ffcc00; }
+.compare-value.loser { color: #666; }

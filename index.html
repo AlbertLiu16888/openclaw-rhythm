@@ -16,13 +16,63 @@
                 <label for="player-name">輸入你的名稱</label>
                 <input type="text" id="player-name" maxlength="12" placeholder="玩家名稱" autocomplete="off">
             </div>
-            <button id="btn-start" class="btn-primary" disabled>開始遊戲</button>
+            <button id="btn-start" class="btn-primary" disabled>單人遊戲</button>
+            <button id="btn-battle" class="btn-primary btn-battle" disabled>⚔️ 對戰模式</button>
             <button id="btn-leaderboard" class="btn-secondary">排行榜</button>
+        </div>
+    </div>
+
+    <!-- 對戰大廳 -->
+    <div id="screen-lobby" class="screen">
+        <div class="lobby-container">
+            <h2>⚔️ 對戰模式</h2>
+            <div class="lobby-actions">
+                <button id="btn-create-room" class="btn-primary">🏠 建立房間</button>
+                <button id="btn-quick-match" class="btn-primary btn-quick">🔀 快速配對</button>
+                <div class="join-group">
+                    <input type="text" id="room-code-input" maxlength="4" placeholder="輸入房間碼" autocomplete="off">
+                    <button id="btn-join-room" class="btn-primary btn-join">🚪 加入</button>
+                </div>
+            </div>
+            <button id="btn-lobby-back" class="btn-secondary">返回</button>
+        </div>
+    </div>
+
+    <!-- 等待室 -->
+    <div id="screen-waiting" class="screen">
+        <div class="waiting-container">
+            <h2>🏠 等待室</h2>
+            <div class="room-code-display">
+                房間碼：<span id="display-room-code" class="room-code-text">----</span>
+            </div>
+            <div class="players-area">
+                <div class="player-slot" id="slot-host">
+                    <div class="slot-avatar">🎵</div>
+                    <div class="slot-name" id="slot-host-name">等待中...</div>
+                    <div class="slot-status" id="slot-host-status"></div>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="player-slot" id="slot-guest">
+                    <div class="slot-avatar">❓</div>
+                    <div class="slot-name" id="slot-guest-name">等待對手...</div>
+                    <div class="slot-status" id="slot-guest-status"></div>
+                </div>
+            </div>
+            <div id="waiting-message" class="waiting-msg">等待對手加入...</div>
+            <button id="btn-ready" class="btn-primary" style="display:none;">✅ 準備</button>
+            <button id="btn-start-battle" class="btn-primary" style="display:none;">🚀 開始對戰！</button>
+            <button id="btn-leave-room" class="btn-secondary">離開房間</button>
         </div>
     </div>
 
     <!-- 遊戲畫面 -->
     <div id="screen-game" class="screen">
+        <!-- 對手狀態條 -->
+        <div id="opponent-bar" class="opponent-bar" style="display:none;">
+            <span class="opp-name" id="opp-name"></span>
+            <span class="opp-score" id="opp-score">0</span>
+            <span class="opp-combo" id="opp-combo"></span>
+        </div>
         <div id="game-hud">
             <div class="hud-left">
                 <span id="hud-player"></span>
@@ -47,6 +97,30 @@
         <div class="result-container">
             <div id="result-content">
                 <h2 id="result-title"></h2>
+                <!-- 對戰結果對比 -->
+                <div id="battle-result-compare" style="display:none;">
+                    <div class="compare-row">
+                        <span class="compare-label">你</span>
+                        <span class="compare-vs">VS</span>
+                        <span class="compare-label" id="compare-opp-name">對手</span>
+                    </div>
+                    <div class="compare-row">
+                        <span class="compare-value" id="compare-my-score">0</span>
+                        <span class="compare-label-mid">分數</span>
+                        <span class="compare-value" id="compare-opp-score">0</span>
+                    </div>
+                    <div class="compare-row">
+                        <span class="compare-value" id="compare-my-combo">0</span>
+                        <span class="compare-label-mid">最高連擊</span>
+                        <span class="compare-value" id="compare-opp-combo">0</span>
+                    </div>
+                    <div class="compare-row">
+                        <span class="compare-value" id="compare-my-perfect">0</span>
+                        <span class="compare-label-mid">Perfect</span>
+                        <span class="compare-value" id="compare-opp-perfect">0</span>
+                    </div>
+                </div>
+                <!-- 單人結果 -->
                 <div id="result-stats">
                     <div class="stat"><span class="stat-label">分數</span><span id="result-score" class="stat-value">0</span></div>
                     <div class="stat"><span class="stat-label">最高連擊</span><span id="result-max-combo" class="stat-value">0</span></div>
@@ -94,9 +168,14 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script src="js/config.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/multiplayer.js"></script>
     <script src="js/ui.js"></script>
 </body>
 </html>

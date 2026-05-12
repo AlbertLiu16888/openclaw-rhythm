@@ -94,8 +94,18 @@ const CONFIG = {
     // 音符下落速度 (px/s)
     noteSpeed: 400,
 
-    // 音符生成
-    generateBeatmap() {
+    // Seeded random number generator (for identical beatmaps in battle)
+    _seededRandom(seed) {
+        let s = seed;
+        return function() {
+            s = (s * 1664525 + 1013904223) & 0xFFFFFFFF;
+            return (s >>> 0) / 0xFFFFFFFF;
+        };
+    },
+
+    // 音符生成（seed 參數用於對戰模式，確保雙方 beatmap 一致）
+    generateBeatmap(seed) {
+        const rng = seed !== undefined ? this._seededRandom(seed) : Math.random.bind(Math);
         const map = [];
         const duration = this.gameDuration;
         let t = 2000;
@@ -108,7 +118,7 @@ const CONFIG = {
                 }
             },
             () => {
-                const lane = Math.random() > 0.5 ? 'L' : 'R';
+                const lane = rng() > 0.5 ? 'L' : 'R';
                 for (let i = 0; i < 4; i++) {
                     map.push({ time: t, lane, type: 'tap' });
                     t += 350;
@@ -122,7 +132,7 @@ const CONFIG = {
                 t += 1000;
             },
             () => {
-                map.push({ time: t, lane: Math.random() > 0.5 ? 'L' : 'R', type: 'rapid' });
+                map.push({ time: t, lane: rng() > 0.5 ? 'L' : 'R', type: 'rapid' });
                 t += 1500;
             },
             () => {
@@ -144,9 +154,9 @@ const CONFIG = {
         ];
 
         while (t < duration - 3000) {
-            const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+            const pattern = patterns[Math.floor(rng() * patterns.length)];
             pattern();
-            t += Math.random() * 300 + 200;
+            t += rng() * 300 + 200;
         }
 
         map.sort((a, b) => a.time - b.time);
