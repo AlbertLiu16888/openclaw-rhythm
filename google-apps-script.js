@@ -28,12 +28,12 @@ var GAME_SHEETS = {
 var DEFAULT_CONFIGS = {
   rhythm: [
     ['key', 'value'],
-    ['secretMessage', 'openthedoor'],
+    ['secretMessage', '二次挑戰已解鎖'],
     ['passThreshold', '3000'],
   ],
   pacman: [
     ['key', 'value'],
-    ['secretMessage', 'openthedoor'],
+    ['secretMessage', '二次挑戰已解鎖'],
     ['passThreshold', '3000'],
   ],
 };

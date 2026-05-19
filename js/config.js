@@ -10,7 +10,7 @@ const CONFIG = {
     get secretMessage() {
         return this._remote.secretMessage
             || localStorage.getItem('oc_secret')
-            || 'openthedoor';
+            || '二次挑戰已解鎖';
     },
     get passThreshold() {
         const remote = parseInt(this._remote.passThreshold);
